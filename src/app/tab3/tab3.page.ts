@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
 import { SenhasService } from '../services/senhas.service';
 
 @Component({
@@ -10,7 +10,8 @@ import { SenhasService } from '../services/senhas.service';
 export class Tab3Page {
   relatorioDoDia: any[] = [];
 
-  constructor(public senhasService: SenhasService) {}
+  constructor(public senhasService: SenhasService) {
+  }
 
   gerarRelatorioDoDia() {
     this.relatorioDoDia = [];
@@ -39,11 +40,11 @@ export class Tab3Page {
     });
   }
   
-  
-
   formatarDataHora(data: Date): string {
     return data.toLocaleString('pt-BR');
   }
+
+
 }
 
 

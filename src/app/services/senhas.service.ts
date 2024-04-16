@@ -27,6 +27,13 @@ export class SenhasService {
   public tempoRestante: number = 0;
   public senhasChamadas: string[] = [];
 
+  horaCriacaoSenha: { [senha: string]: Date } = {};
+
+  public tempoMedioSP: number = 0;
+  public tempoMedioSG: number = 0;
+  public tempoMedioSE: number = 0;
+
+
   expedienteEmAndamento(): boolean {
     const horaAtual = new Date().getHours();
     return horaAtual >= this.horaInicioExpediente && horaAtual < this.horaFimExpediente;
@@ -98,10 +105,13 @@ export class SenhasService {
   
       this.inputNovaSenha = `${ano}${mes}${dia}-${tipoSenha}${numeroSenha}`;
       this.senhasArray[tipoSenha].push(this.inputNovaSenha);
+      
+      this.horaCriacaoSenha[this.inputNovaSenha] = new Date();
     } else {
       this.descartarSenhasForaExpediente();
     }
   }
+  
   
   
   pegaProximaSenha(): string | undefined {
@@ -125,6 +135,68 @@ atualizarSenhaChamada(senha: string) {
   this.senhasChamadas.unshift(senha);
 }
 
-
+calcularTempoEsperaParaSenha(senha: string): number | null {
+  const horaCriacaoSenha = this.horaCriacaoSenha[senha];
+  if (horaCriacaoSenha) {
+    const tempoEspera = (new Date().getTime() - horaCriacaoSenha.getTime()) / 1000;
+    console.log(`Tempo de espera para a senha ${senha}: ${tempoEspera} segundos`);
+    return tempoEspera;
+  } else {
+    console.error("Horário de criação da senha não encontrado:", senha);
+    return null;
+  }
 }
 
+calcularTempoMedioSP(): number {
+  const senhasSP = this.senhasArray['SP'];
+  if (senhasSP.length === 0) {
+    return 0;
+  }
+
+  const somaTempos = senhasSP.reduce((total, senha) => {
+    const tempoEspera = this.calcularTempoEsperaParaSenha(senha);
+    return total + (tempoEspera !== null ? tempoEspera : 0);
+  }, 0);
+
+  this.tempoMedioSP = somaTempos / senhasSP.length;
+  return this.tempoMedioSP;
+}
+
+
+calcularTempoMedioSE(): number {
+  const senhasSE = this.senhasArray['SE'];
+  if (senhasSE.length === 0) {
+    return 0;
+  }
+
+  const somaTempos = senhasSE.reduce((total, senha) => {
+    const tempoEspera = this.calcularTempoEsperaParaSenha(senha);
+    return total + (tempoEspera !== null ? tempoEspera : 0);
+  }, 0);
+
+  this.tempoMedioSE = somaTempos / senhasSE.length;
+  return this.tempoMedioSE;
+}
+
+
+calcularTempoMedioSG(): number {
+  const senhasSG = this.senhasArray['SG'];
+  if (senhasSG.length === 0) {
+    return 0;
+  }
+
+  const somaTempos = senhasSG.reduce((total, senha) => {
+    const tempoEspera = this.calcularTempoEsperaParaSenha(senha);
+    return total + (tempoEspera !== null ? tempoEspera : 0);
+  }, 0);
+
+  this.tempoMedioSG = somaTempos / senhasSG.length;
+  return this.tempoMedioSG;
+}
+
+formatarTempoEspera(tempo: number): string {
+  
+  return tempo.toFixed(2);
+}
+
+}

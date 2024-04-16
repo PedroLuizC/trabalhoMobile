@@ -17,10 +17,7 @@
 
   <ion-card>
     <ion-card-content>
-      <ion-button expand="block" (click)="chamarCliente()" [disabled]="senhasService.senhaAtual" [disabled]="!senhasService.expedienteEmAndamento()">Chamar o próximo da fila</ion-button>
-      <ion-item *ngIf="senhasService.senhaAtual">
-        Tempo restante para o próximo atendimento: {{ senhasService.tempoRestante }} segundos
-      </ion-item>
+      <ion-button expand="block" (click)="chamarCliente()" [disabled]="!senhasService.expedienteEmAndamento()">Chamar o próximo da fila</ion-button>
     </ion-card-content>
   </ion-card>
   
