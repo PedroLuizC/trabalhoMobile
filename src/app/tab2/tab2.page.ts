@@ -26,8 +26,6 @@ export class Tab2Page {
       const tempoMedioSG = this.senhasService.calcularTempoMedioSG();
       console.log(`Tempo médio de espera para senhas do tipo "SG": ${tempoMedioSG} segundos`);
       
-      // Restante do código para chamar a senha...
-      
       const tipoSenhaMatch = proximaSenha.match(/[A-Z]+/);
       if (tipoSenhaMatch && tipoSenhaMatch.length > 0) {
         const tipoSenha = tipoSenhaMatch[0];

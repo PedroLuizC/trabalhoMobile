@@ -34,6 +34,12 @@ export class SenhasService {
   public tempoMedioSE: number = 0;
 
 
+   public senhasArray: { [key: string]: string[] } = {
+    'SG': [],
+    'SP': [],
+    'SE': []
+  };
+
   expedienteEmAndamento(): boolean {
     const horaAtual = new Date().getHours();
     return horaAtual >= this.horaInicioExpediente && horaAtual < this.horaFimExpediente;
@@ -50,6 +56,10 @@ export class SenhasService {
   atualizarTempoRestante(tempoRestante: number) {
     this.tempoRestante = tempoRestante;
   }
+
+  registrarAtendimento() {
+    this.senhasAtendidas++;
+  }
   
   registrarAtendimentoPriorSP() {
     this.senhasAtendidasPriorSP++;
@@ -61,16 +71,6 @@ export class SenhasService {
         'SG': [], 'SP': [],'SE': []
       };
     }
-  }
-
-  public senhasArray: { [key: string]: string[] } = {
-    'SG': [],
-    'SP': [],
-    'SE': []
-  };
-
-  registrarAtendimento() {
-    this.senhasAtendidas++;
   }
 
   somaGeral(tipoSenha: string) {
@@ -111,8 +111,6 @@ export class SenhasService {
       this.descartarSenhasForaExpediente();
     }
   }
-  
-  
   
   pegaProximaSenha(): string | undefined {
 
